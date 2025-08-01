@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DABY METHOD by Teacher Daby @2025</title>
+    <!-- Google Fonts for a nice sans-serif like Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS for utility classes and responsive design (loaded via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- html2pdf.js for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Define CSS Variables for Burger King, McDonald's, TGIF, and Netflix Palettes */
+        :root {
+            /* Burger King Palette Colors */
+            --bk-red: #D40026;      /* Primary Red for accents/buttons */
+            --bk-gold: #F2A900;     /* Primary Golden Orange for headings/highlights */
+            --bk-blue: #003366;     /* Dark Blue for specific accents/buttons */
+            --bk-white: #FFFFFF;    /* White for button text/contrast */
+
+            /* McDonald's Palette Colors (subtly integrated) */
+            --mc-red: #BF0A30;      /* McDonald's Red */
+            --mc-yellow: #FFC72C;   /* McDonald's Yellow */
+
+            /* TGIF Palette Colors (subtly integrated) */
+            --tgif-red: #D2232A;    /* TGIF Red */
+            --tgif-blue: #0070C0;   /* TGIF Blue */
+
+            /* Netflix Mode Colors (keeping for dark theme base) */
+            --netflix-dark: #141414; /* Deep charcoal for background */
+            --netflix-medium: #222222; /* Slightly lighter dark for cards/navbar */
+            --netflix-light-text: #E5E5E5; /* Light grey for general text */
+
+            /* Feedback colors */
+            --feedback-correct: #4CAF50; /* Green for correct feedback */
+            --feedback-incorrect: #FF9800; /* Orange for incorrect feedback */
+        }
+
+        /* General Body Styling - Netflix Mode */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--netflix-dark); /* Dark background */
+            color: var(--netflix-light-text); /* Light text for contrast */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll on smaller screens */
+        }
+
+        /* Header/Navbar Styling */
+        .navbar {
+            background-color: var(--netflix-medium); /* Darker grey for navbar */
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+            position: sticky; /* Keeps navbar at the top when scrolling */
+            top: 0;
+            z-index: 1000; /* Ensures navbar stays on top of other content */
+        }
+
+        /* Logo Styling */
+        .logo {
+            color: var(--bk-red); /* Burger King Red for the logo */
+            font-size: 2.2em;
+            font-weight: 700;
+            margin: 0; /* Remove default margin */
+            animation: pulse 2s infinite alternate; /* Attention-grabbing pulse effect */
+        }
+
+        /* Keyframes for the pulse animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.02);
+                opacity: 0.95;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* PDF Export Button Styling */
+        .pdf-button {
+            background-color: var(--bk-gold); /* Burger King Golden Orange button */
+            color: var(--netflix-dark); /* Dark text for contrast on gold */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px; /* Rounded corners for buttons */
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow for impact */
+        }
+
+        .pdf-button:hover {
+            background-color: var(--mc-yellow); /* Slightly brighter gold/yellow on hover (McDonald's touch) */
+            transform: translateY(-2px); /* Subtle lift effect */
+        }
+
+        /* Main Content Container - Simulates Netflix Content Grid/Flow */
+        .content-container {
+            display: flex;
+            flex-direction: column; /* Stacks sections vertically */
+            align-items: center; /* Centers content cards */
+            padding: 30px 5%;
+            gap: 40px; /* Space between content cards */
+            max-width: 1200px; /* Max width for content for better readability */
+            margin: 0 auto; /* Center the container itself */
+        }
+
+        /* Individual Content Card Styling */
+        .content-card {
+            background-color: var(--netflix-medium); /* Darker grey for card background */
+            border-radius: 12px; /* More rounded corners for cards */
+            padding: 40px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); /* Deeper shadow for "pop" effect */
+            width: 100%;
+            max-width: 800px; /* Max width for individual cards */
+            box-sizing: border-box; /* Include padding in width */
+            transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.6s ease;
+            /* Initial state for "impact to click in sequence" */
+            opacity: 0;
+            transform: translateY(30px) scale(0.98); /* Start slightly below and smaller */
+        }
+
+        /* Animation class for "impact to click in sequence" */
+        .content-card.fade-in {
+            opacity: 1;
+            transform: translateY(0) scale(1); /* Fade in and move to original position */
+        }
+
+        .content-card:hover {
+            transform: translateY(-8px) scale(1.01); /* More pronounced lift on hover */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8); /* Stronger shadow on hover */
+        }
+        
+        .content-card h4, .content-card h5 {
+            color: var(--bk-gold);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .content-card h5 {
+            font-size: 1.25em;
+        }
+        
+        .content-card ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin-top: 1rem;
+        }
+        
+        .content-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Section Title Styling - Burger King Golden Orange */
+        .section-title {
+            color: var(--bk-gold); /* Burger King Golden Orange for headings */
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Subtle text shadow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* Space between title and button */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        /* Content Text Styling */
+        .content-text {
+            font-size: 1.15em;
+            margin-top: 20px;
+            color: var(--netflix-light-text);
+            line-height: 1.8; /* Improved readability */
+        }
+
+        /* Language Buttons Container */
+        .lang-buttons {
+            text-align: center;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Space between buttons */
+        }
+
+        /* Individual Language Button Styling */
+        .lang-buttons button {
+            background-color: var(--bk-red); /* Burger King Red for language buttons */
+            color: var(--bk-white); /* White text for contrast */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .lang-buttons button:hover {
+            background-color: var(--tgif-red); /* Slightly brighter red on hover (TGIF touch) */
+            transform: translateY(-1px);
+        }
+
+        /* Active Language Button Styling */
+        .lang-buttons button.active {
+            background-color: var(--bk-gold); /* Burger King Golden Orange for active button */
+            color: var(--netflix-dark); /* Dark text for contrast */
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Highlight for expressions */
+        .highlight-expression {
+            background-color: var(--bk-gold); /* Golden Orange background */
+            color: var(--netflix-dark); /* Dark text */
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold; /* Make it bold for emphasis */
+            white-space: nowrap; /* Prevent breaking across lines for short phrases */
+        }
+
+        /* Animated and underlined highlight for 'join' */
+        .animated-highlight {
+            text-decoration: underline; /* Underline the text */
+            animation: pulse-highlight 1.5s infinite alternate; /* Apply the animation */
+        }
+
+        @keyframes pulse-highlight {
+            0% {
+                color: var(--netflix-light-text);
+                text-decoration-color: var(--bk-gold);
+            }
+            50% {
+                color: var(--bk-gold);
+                text-decoration-color: var(--netflix-light-text);
+            }
+            100% {
+                color: var(--netflix-light-text);
+                text-decoration-color: var(--bk-gold);
+            }
+        }
+        
+        /* New styling for the example box */
+        .example-box {
+            background-color: var(--netflix-dark); /* Slightly darker than card background */
+            border: 2px dashed var(--bk-gold); /* Golden Orange dashed border */
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Exercise Specific Styles */
+        .exercise-container {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .exercise-container h3 {
+            color: var(--bk-gold); /* Burger King Golden Orange */
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .exercise-prompt, .matching-item {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: var(--netflix-light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .exercise-input, .matching-input {
+            background-color: #333;
+            color: var(--netflix-light-text);
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1em;
+            width: 70%;
+            max-width: 300px;
+            box-sizing: border-box;
+        }
+
+        .exercise-button {
+            background-color: var(--bk-red); /* Burger King Red */
+            color: var(--bk-white);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .exercise-button:hover {
+            background-color: var(--mc-red); /* Slightly brighter red on hover (McDonald's touch) */
+            transform: translateY(-1px);
+        }
+
+        .play-audio-button {
+            background-color: var(--bk-blue); /* Burger King Blue */
+            color: var(--bk-white);
+            padding: 8px 12px; /* Smaller padding for inline buttons */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em; /* Smaller font size for inline buttons */
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-left: 5px; /* Small margin to separate from text */
+            white-space: nowrap; /* Prevent button text from wrapping */
+            display: inline-flex; /* Align icon and text */
+            align-items: center;
+            gap: 5px;
+        }
+
+        .play-audio-button:hover {
+            background-color: var(--tgif-blue); /* Slightly darker blue on hover (TGIF touch) */
+            transform: translateY(-1px);
+        }
+
+        .feedback-message {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+            min-height: 25px;
+        }
+
+        .feedback-message.correct {
+            color: var(--feedback-correct);
+        }
+
+        .feedback-message.incorrect {
+            color: var(--feedback-incorrect);
+        }
+
+        /* Loader styling for audio playback */
+        .audio-loader {
+            border: 4px solid var(--netflix-medium);
+            border-top: 4px solid var(--bk-gold);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <h1 class="logo">DABY METHOD</h1>
+        <button id="pdf-export-btn" class="pdf-button"><i class="fas fa-file-pdf mr-2"></i> Export to PDF</button>
+    </header>
+
+    <div class="content-container" id="content-to-export">
+        <!-- Language Selection Buttons -->
+        <div class="lang-buttons">
+            <button id="en-btn" class="active">English</button>
+            <button id="pt-btn">Português</button>
+        </div>
+
+        <!-- Dynamic Content Section -->
+        <div class="content-card">
+            <h2 id="method-title" class="section-title"></h2>
+            <p id="method-description" class="content-text"></p>
+        </div>
+        
+        <!-- Lesson 1 -->
+        <div class="content-card">
+            <h2 id="lesson1-title" class="section-title"></h2>
+            <p id="lesson1-text" class="content-text"></p>
+        </div>
+
+        <!-- Overview -->
+        <div class="content-card">
+            <h2 id="guide-title" class="section-title"></h2>
+            <p id="guide-text" class="content-text"></p>
+        </div>
+
+        <!-- Lesson 2 -->
+        <div class="content-card">
+            <h2 id="lesson2-title" class="section-title"></h2>
+            <p id="lesson2-text" class="content-text"></p>
+        </div>
+
+        <!-- Lesson 3 -->
+        <div class="content-card">
+            <h2 id="lesson3-title" class="section-title"></h2>
+            <p id="lesson3-text" class="content-text"></p>
+        </div>
+
+        <!-- Lesson 4 -->
+        <div class="content-card">
+            <h2 id="lesson4-title" class="section-title"></h2>
+            <p id="lesson4-text" class="content-text"></p>
+        </div>
+        
+        <!-- Lesson 5 -->
+        <div class="content-card">
+            <h2 id="lesson5-title" class="section-title"></h2>
+            <p id="lesson5-text" class="content-text"></p>
+        </div>
+
+        <!-- Lesson 6 -->
+        <div class="content-card">
+            <h2 id="lesson6-title" class="section-title"></h2>
+            <p id="lesson6-text" class="content-text"></p>
+        </div>
+
+        <!-- Exercise Section -->
+        <div class="content-card">
+            <h2 class="section-title">
+                <span id="exercise-title"></span>
+            </h2>
+            <div id="exercise-body" class="exercise-container">
+                <div class="exercise-prompt">
+                    <span id="exercise-prompt-text"></span>
+                    <button id="play-prompt-audio" class="play-audio-button" aria-label="Play prompt audio">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+                <div class="flex items-center justify-center gap-2 mt-4">
+                    <input type="text" id="exercise-input" class="exercise-input" placeholder="Your answer here...">
+                    <button id="check-answer-btn" class="exercise-button">Check</button>
+                </div>
+                <div id="feedback-message" class="feedback-message"></div>
+                <button id="next-exercise-btn" class="exercise-button mt-4" style="display: none;">Next Exercise</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden audio element for TTS playback -->
+    <audio id="tts-audio" style="display: none;"></audio>
+    <div id="loading-spinner" class="audio-loader hidden"></div>
+
+    <script>
+        // Global data structure for content, expressions, and exercises in different languages
+        const dabymethod = {
+            en: {
+                method: {
+                    title: "The DABY METHOD",
+                    description: "Welcome to the DABY METHOD! This approach is designed to help you learn and internalize new languages through a simple, two-step process. We focus on practical expressions you can use in your daily life. Let's begin our journey to fluency! Every word has a context, and in this method, you'll learn to understand new phrases not as isolated words, but within their full meaning. We'll provide a common expression and break down its use in a real-world situation.",
+                },
+                lesson1: {
+                    title: "Lesson 1: To Join",
+                    text: `Today's expression is: <span class="highlight-expression">"to join."</span> The verb **"to join"** is a professional and direct way to confirm your attendance or participation. It's a fundamental part of workplace etiquette, signaling your commitment and readiness without using casual language.
+                    <br><br>
+                    <h4>Why It Works</h4>
+                    <p>
+                        Using <span class="animated-highlight">"to join"</span> is concise and polite, confirming your availability in a way that respects the organizer's time. It shows you are engaged and ready to collaborate.
+                    </p>
+                    <br>
+                    <h4>Short Dialogue Example</h4>
+                    <div class="example-box">
+                        <p><b>Manager:</b> "Are you able to attend the team meeting tomorrow?"</p>
+                        <p><b>You:</b> "Yes, I am happy to <span class="animated-highlight">join</span> the meeting."</p>
+                    </div>`
+                },
+                lesson2: {
+                    title: "Lesson 2: Prior Commitment",
+                    text: `Today's expression is: <span class="highlight-expression">"prior commitment."</span> The phrase **"prior commitment" is a polite and professional way to decline an invitation or request due to a pre-existing obligation.** It is a common and respectful way to manage your schedule without having to give specific, personal details.
+                    <br><br>
+                    For professionals, using '<span class="animated-highlight">prior commitment</span>' is a key part of maintaining boundaries and a professional image. In an email, you might write: "Thank you for the invitation, but I have a <span class="animated-highlight">prior commitment</span> at that time." In a verbal conversation, you can say: "I'd love to, but I have a <span class="animated-highlight">prior commitment</span> that day." This phrase is perfect for when you want to be firm but polite. It communicates that your time is already booked without sounding rude or unaccommodating.`
+                },
+                lesson3: {
+                    title: "Lesson 3: I am sorry",
+                    text: `Today's expression is: <span class="highlight-expression">"I am sorry."</span> This phrase is a crucial tool in professional settings to **express regret, interrupt politely, or show empathy.** It demonstrates humility and respect for others.
+                    <br><br>
+                    <h4>Why It Works</h4>
+                    <p>
+                        <span class="animated-highlight">"I am sorry"</span> softens communication and shows that you are considerate. It allows you to address mistakes or interrupt a conversation gracefully, keeping the tone respectful and collaborative.
+                    </p>
+                    <br>
+                    <h4>Short Dialogue Example</h4>
+                    <div class="example-box">
+                        <p><b>Colleague:</b> "...so the main point of the proposal is..."</p>
+                        <p><b>You:</b> "<span class="animated-highlight">I am sorry</span> to interrupt, but can you please clarify that point?"</p>
+                    </div>`
+                },
+                lesson4: {
+                    title: "Lesson 4: May I take a rain check?",
+                    text: `Today's expression is: <span class="highlight-expression">"May I take a rain check?"</span> This polite idiom is used to **decline an invitation while expressing an interest in accepting it at a later time.** It's a friendly way to manage your schedule without offending anyone.
+                    <br><br>
+                    <h4>Why It Works</h4>
+                    <p>
+                        Using <span class="animated-highlight">"take a rain check"</span> shows that you value the person and their invitation. It keeps the door open for future plans, preserving the relationship even when you can't attend.
+                    </p>
+                    <br>
+                    <h4>Short Dialogue Example</h4>
+                    <div class="example-box">
+                        <p><b>Colleague:</b> "Hey, a few of us are going to lunch. Would you like to come?"</p>
+                        <p><b>You:</b> "That sounds great, but I have a lot to do right now. <span class="animated-highlight">May I take a rain check?</span>"</p>
+                    </div>`
+                },
+                lesson5: {
+                    title: "Lesson 5: May I reschedule?",
+                    text: `Today's expression is: <span class="highlight-expression">"May I reschedule?"</span> This is a direct and professional phrase used to **ask for a change in the date or time of a planned meeting or event.** Unlike "take a rain check," this phrase indicates a definite intention to find a new time to meet.
+                    <br><br>
+                    **The Difference:**
+                    * **May I reschedule?** This is a formal request. It shows that you value the meeting and are committed to finding a new time. It is used when you need to move a specific appointment to a different time.
+                    * **May I take a rain check?** This is a more casual and social phrase. It means you are declining the invitation for now but would like to do it another time, without a firm commitment to a new date.
+
+                    For professionals, using '<span class="animated-highlight">reschedule</span>' is key for managing your calendar effectively while showing respect for others' time. For instance, you could say: **'Something urgent has come up. May I reschedule our meeting for later this week?'** This is clear, polite, and action-oriented. It’s perfect for business appointments, interviews, or any formal gathering that requires a firm commitment.
+                    <br><br>
+                    **A short dialogue example:**
+                    <br>
+                    **Manager:** "Are we still on for our one-on-one tomorrow at 10 a.m.?"
+                    <br>
+                    **You:** "I'm sorry, I have an unexpected deadline to meet. **May I reschedule** our meeting for tomorrow afternoon?"
+                    <br>
+                    **Manager:** "Yes, let's aim for 2 p.m. instead."
+                    <br><br>
+                    ---
+                    <h4>Key Takeaway</h4>
+                    <div class="example-box">
+                        <ul>
+                            <li>Use <span class="animated-highlight">"reschedule"</span> for formal, business-related events where you plan to find a new time.</li>
+                            <li>Use <span class="animated-highlight">"take a rain check"</span> for informal, social events where you're not committing to a new time.</li>
+                        </ul>
+                    </div>`
+                },
+                lesson6: {
+                    title: "Lesson 6: Double Booked",
+                    text: `Today's expression is: <span class="highlight-expression">"double booked."</span> The phrase **"double booked" means you have two commitments scheduled at the same time.** It is a professional and concise way to explain that you have a scheduling conflict, indicating that you cannot attend an event.
+                    <br><br>
+                    <h4>Why It Works</h4>
+                    <p>
+                        Using <span class="animated-highlight">"double booked"</span> is a direct way to communicate a scheduling problem without placing blame or providing an excessive amount of detail. It shows that you have a prior engagement and need to find a solution, such as rescheduling or sending a substitute.
+                    </p>
+                    <br>
+                    <h4>Short Dialogue Example</h4>
+                    <div class="example-box">
+                        <p><b>Colleague:</b> "Hey, are you coming to the team meeting at 11 a.m.?"</p>
+                        <p><b>You:</b> "I'm afraid I can't. I'm <span class="animated-highlight">double booked</span> with the client call at the same time."</p>
+                    </div>`
+                },
+                guide: {
+                    title: "Overview",
+                    text: `The verb "<span class="animated-highlight">to join</span>" is a clear, professional way to confirm participation in meetings, projects, or events. It’s concise, polite, and se alinha com a etiqueta de RSVP, tornando-o essencial para a comunicação no local de trabalho.
+                    <br><br>
+                    <h4>Why It Works</h4>
+                    <p>
+                        "To join" sinaliza comprometimento e prontidão, melhorando a clareza e a colaboração em ambientes profissionais.
+                    </p>
+                    <br>
+                    <h4>Examples</h4>
+                    <ul>
+                        <li><b>Email:</b> "I’ll <span class="animated-highlight">join</span> the 10 a.m. call as scheduled."</li>
+                        <li><b>Chat:</b> "<span class="animated-highlight">Joining</span> the meeting now."</li>
+                        <li><b>Verbal:</b> "I’m ready to <span class="animated-highlight">join</span> the project discussion."</li>
+                        <li><b>RSVP:</b> "Confirmed, I’ll <span class="animated-highlight">join</span> at the set time."</li>
+                        <li><b>Follow-Up:</b> "Any prep needed before I <span class="animated-highlight">join</span>?"</li>
+                    </ul>
+                    <br>
+                    <h4>How to Join a Meeting</h4>
+                    <div class="example-box">
+                        <ul>
+                            <li><span class="animated-highlight">Get the link or ID</span> from the invitation.</li>
+                            <li><span class="animated-highlight">Open the app</span> (e.g., Zoom, Teams) or link.</li>
+                            <li><span class="animated-highlight">Enter credentials</span> if needed.</li>
+                            <li><span class="animated-highlight">Check audio/video</span> settings.</li>
+                            <li><span class="animated-highlight">Click "Join"</span> and connect early.</li>
+                        </ul>
+                    </div>
+                    <p class="mt-4">"<span class="animated-highlight">To join</span>" ensures professional, effective communication across all scenarios.</p>`
+                },
+                exercise: {
+                    title: "Y - Your Turn! (Exercise)",
+                    exercises: [
+                        { prompt: "Complete the sentence: 'Are you ready ___ the call?'", answer: "to join" },
+                        { prompt: "Translate the phrase: 'I'm excited to join the team.'", answer: "Eu estou animado para me juntar à equipe." },
+                        { prompt: "What does 'to join' mean in this context?", answer: "To become a member of or participate in." },
+                        { prompt: "Complete the sentence: 'I'm sorry, I have a ___ and can't make it.'", answer: "prior commitment" },
+                        { prompt: "Translate the phrase: 'I am sorry for the delay.'", answer: "Lamento o atraso." },
+                        { prompt: "Translate the phrase: 'Can I take a rain check?'", answer: "Posso deixar para uma próxima vez?" },
+                        { prompt: "Which phrase suggests a definite intent to find a new time: 'reschedule' or 'rain check'?", answer: "reschedule" },
+                        { prompt: "Translate the phrase: 'May I reschedule?'", answer: "Posso remarcar?" },
+                        { prompt: "Complete the sentence: 'I can't attend the meeting, I'm ___ with another client.'", answer: "double booked" }
+                    ]
+                }
+            },
+            pt: {
+                method: {
+                    title: "O MÉTODO DABY",
+                    description: "Bem-vindo ao MÉTODO DABY! Esta abordagem foi projetada para ajudá-lo a aprender e internalizar novos idiomas por meio de um processo simples de duas etapas. Nós nos concentramos em expressões práticas que você pode usar em sua vida diária. Vamos começar nossa jornada para a fluência! Toda palavra tem um contexto, e neste método, você aprenderá a entender novas frases não como palavras isoladas, mas dentro de seu significado completo. Forneceremos uma expressão comum e detalharemos seu uso em uma situação real.",
+                },
+                lesson1: {
+                    title: "Lição 1: Juntar-se",
+                    text: `A expressão de hoje é: <span class="highlight-expression">"to join."</span> O verbo **"to join"** é uma maneira profissional e direta de confirmar sua presença ou participação. É uma parte fundamental da etiqueta no local de trabalho, sinalizando seu compromisso e prontidão sem usar linguagem casual.
+                    <br><br>
+                    <h4>Por Que Funciona</h4>
+                    <p>
+                        Usar <span class="animated-highlight">"to join"</span> é conciso e educado, confirmando sua disponibilidade de uma maneira que respeita o tempo do organizador. Isso mostra que você está engajado e pronto para colaborar.
+                    </p>
+                    <br>
+                    <h4>Exemplo de Diálogo Curto</h4>
+                    <div class="example-box">
+                        <p><b>Gerente:</b> "Você pode comparecer à reunião de equipe amanhã?"</p>
+                        <p><b>Você:</b> "Sim, ficarei feliz em me <span class="animated-highlight">juntar</span> à reunião."</p>
+                    </div>`
+                },
+                lesson2: {
+                    title: "Lição 2: Compromisso Prévio",
+                    text: `A expressão de hoje é: <span class="highlight-expression">"prior commitment."</span> A frase **"compromisso prévio" é uma maneira educada e profissional de recusar um convite ou solicitação devido a uma obrigação já existente.** É uma forma comum e respeitosa de gerenciar sua agenda sem ter que dar detalhes pessoais específicos.
+                    <br><br>
+                    Para profissionais, usar '<span class="animated-highlight">compromisso prévio</span>' é uma parte fundamental para manter limites e uma imagem profissional. Em um e-mail, você pode escrever: "Obrigado pelo convite, mas tenho um <span class="animated-highlight">compromisso prévio</span> nesse horário." Em uma conversa, você pode dizer: "Eu adoraria, mas tenho um <span class="animated-highlight">compromisso prévio</span> nesse dia." Esta frase é perfeita para quando você quer ser firme mas educado. Ela comunica que seu tempo já está ocupado sem soar rude ou inflexível.`
+                },
+                lesson3: {
+                    title: "Lição 3: Peço desculpas",
+                    text: `A expressão de hoje é: <span class="highlight-expression">"I am sorry."</span> Esta frase é uma ferramenta crucial em ambientes profissionais para **expressar arrependimento, interromper educadamente ou mostrar empatia.** Demonstra humildade e respeito pelos outros.
+                    <br><br>
+                    <h4>Por Que Funciona</h4>
+                    <p>
+                        <span class="animated-highlight">"Peço desculpas"</span> suaviza a comunicação e mostra que você é atencioso. Permite que você aborde erros ou interrompa uma conversa com graça, mantendo o tom respeitoso e colaborativo.
+                    </p>
+                    <br>
+                    <h4>Exemplo de Diálogo Curto</h4>
+                    <div class="example-box">
+                        <p><b>Colega:</b> "...então o ponto principal da proposta é..."</p>
+                        <p><b>Você:</b> "<span class="animated-highlight">Peço desculpas</span> pela interrupção, mas você pode, por favor, esclarecer esse ponto?"</p>
+                    </div>`
+                },
+                lesson4: {
+                    title: "Lição 4: Posso deixar para uma próxima vez?",
+                    text: `A expressão de hoje é: <span class="highlight-expression">"May I take a rain check?"</span> Esta expressão idiomática educada é usada para **recusar um convite enquanto expressa o interesse em aceitá-lo em um momento posterior.** É uma maneira amigável de gerenciar sua agenda sem ofender ninguém.
+                    <br><br>
+                    <h4>Por Que Funciona</h4>
+                    <p>
+                        Usar <span class="animated-highlight">"deixar para uma próxima vez"</span> mostra que você valoriza a pessoa e o convite dela. Mantém a porta aberta para planos futuros, preservando o relacionamento mesmo quando você não pode comparecer.
+                    </p>
+                    <br>
+                    <h4>Exemplo de Diálogo Curto</h4>
+                    <div class="example-box">
+                        <p><b>Colega:</b> "Olá, alguns de nós vamos almoçar. Você gostaria de vir?"</p>
+                        <p><b>Você:</b> "Isso parece ótimo, mas tenho muito o que fazer agora. <span class="animated-highlight">Posso deixar para uma próxima vez?</span>"</p>
+                    </div>`
+                },
+                lesson5: {
+                    title: "Lição 5: Posso remarcar?",
+                    text: `A expressão de hoje é: <span class="highlight-expression">"May I reschedule?"</span> Esta é uma frase direta e profissional usada para **solicitar uma mudança na data ou no horário de uma reunião ou evento planejado.** Diferente de "posso deixar para uma próxima vez?", esta frase indica uma intenção definida de encontrar um novo horário para se encontrar.
+                    <br><br>
+                    **A Diferença:**
+                    * **Posso remarcar?** (May I reschedule?) Esta é uma solicitação formal. Mostra que você valoriza a reunião e está comprometido em encontrar um novo horário. É usada quando você precisa mover um compromisso específico para um horário diferente.
+                    * **Posso deixar para uma próxima vez?** (May I take a rain check?) Esta é uma frase mais casual e social. Significa que você está recusando o convite por agora, mas gostaria de fazê-lo em outro momento, sem um compromisso firme com uma nova data.
+
+                    Para profissionais, usar '<span class="animated-highlight">remarcar</span>' é fundamental para gerenciar sua agenda de forma eficaz, ao mesmo tempo em que demonstra respeito pelo tempo dos outros. Por exemplo, você poderia dizer: **'Surgiu algo urgente. Posso remarcar nossa reunião para o final desta semana?'** Isso é claro, educado e orientado para a ação. É perfeito para compromissos de negócios, entrevistas ou qualquer reunião formal que exija um compromisso firme.
+                    <br><br>
+                    **A short dialogue example:**
+                    <br>
+                    **Gerente:** "Ainda temos nossa reunião individual amanhã às 10h?"
+                    <br>
+                    **Você:** "Sinto muito, tenho um prazo inesperado para cumprir. **Posso remarcar** nossa reunião para amanhã à tarde?"
+                    <br>
+                    **Gerente:** "Sim, vamos tentar às 14h."
+                    <br><br>
+                    ---
+                    <h4>Ponto-chave</h4>
+                    <div class="example-box">
+                        <ul>
+                            <li>Use <span class="animated-highlight">"remarcar"</span> para eventos formais e de negócios onde você planeja encontrar um novo horário.</li>
+                            <li>Use <span class="animated-highlight">"deixar para uma próxima vez"</span> para eventos informais e sociais onde você não está comprometendo uma nova data.</li>
+                        </ul>
+                    </div>`
+                },
+                lesson6: {
+                    title: "Lição 6: Dois Comprometimentos",
+                    text: `A expressão de hoje é: <span class="highlight-expression">"double booked."</span> A frase **"double booked" significa que você tem dois compromissos agendados para o mesmo horário.** É uma maneira profissional e concisa de explicar que você tem um conflito de agenda, indicando que não pode comparecer a um evento.
+                    <br><br>
+                    <h4>Por Que Funciona</h4>
+                    <p>
+                        Usar <span class="animated-highlight">"double booked"</span> é uma maneira direta de comunicar um problema de agendamento sem colocar a culpa em alguém ou dar muitos detalhes. Isso mostra que você tem um compromisso prévio e precisa encontrar uma solução, como remarcar ou enviar um substituto.
+                    </p>
+                    <br>
+                    <h4>Exemplo de Diálogo Curto</h4>
+                    <div class="example-box">
+                        <p><b>Colega:</b> "Olá, você vem para a reunião de equipe às 11h?"</p>
+                        <p><b>Você:</b> "Receio que não possa. Estou com a agenda <span class="animated-highlight">duplamente reservada</span> com a ligação do cliente no mesmo horário."</p>
+                    </div>`
+                },
+                guide: {
+                    title: "Visão Geral",
+                    text: `O verbo "<span class="animated-highlight">to join</span>" é uma maneira clara e profissional de confirmar a participação em reuniões, projetos ou eventos. É conciso, educado e se alinha com a etiqueta de RSVP, tornando-o essencial para a comunicação no local de trabalho.
+                    <br><br>
+                    <h4>Por Que Funciona</h4>
+                    <p>
+                        "To join" sinaliza comprometimento e prontidão, melhorando a clareza e a colaboração em ambientes profissionais.
+                    </p>
+                    <br>
+                    <h4>Exemplos</h4>
+                    <ul>
+                        <li><b>Email:</b> "Eu vou <span class="animated-highlight">participar da</span> chamada das 10h conforme agendado."</li>
+                        <li><b>Chat:</b> "<span class="animated-highlight">Entrando</span> na reunião agora."</li>
+                        <li><b>Verbal:</b> "Estou pronto para me <span class="animated-highlight">juntar à</span> discussão do projeto."</li>
+                        <li><b>RSVP:</b> "Confirmado, vou <span class="animated-highlight">participar</span> no horário definido."</li>
+                        <li><b>Acompanhamento:</b> "Há alguma preparação necessária antes de eu <span class="animated-highlight">entrar</span>?"</li>
+                    </ul>
+                    <br>
+                    <h4>Como Entrar em uma Reunião</h4>
+                    <div class="example-box">
+                        <ul>
+                            <li><span class="animated-highlight">Obtenha o link ou ID</span> do convite.</li>
+                            <li><span class="animated-highlight">Abra o aplicativo</span> (por exemplo, Zoom, Teams) ou o link.</li>
+                            <li><span class="animated-highlight">Insira as credenciais</span>, se necessário.</li>
+                            <li><span class="animated-highlight">Verifique as configurações</span> de áudio/vídeo.</li>
+                            <li><span class="animated-highlight">Clique em "Join"</span> e conecte-se com antecedência.</li>
+                        </ul>
+                    </div>
+                    <p class="mt-4">"<span class="animated-highlight">To join</span>" garante uma comunicação profissional e eficaz em todos os cenários.</p>`
+                },
+                exercise: {
+                    title: "Y - Sua Vez! (Exercício)",
+                    exercises: [
+                        { prompt: "Complete a frase: 'Você está pronto para ___ a chamada?'", answer: "entrar na" },
+                        { prompt: "Traduza a frase: 'Estou animado para me juntar à equipe.'", answer: "I'm excited to join the team." },
+                        { prompt: "O que significa 'to join' neste contexto?", answer: "Tornar-se membro ou participar." },
+                        { prompt: "Complete a frase: 'Sinto muito, tenho um ___ e não posso ir.'", answer: "compromisso prévio" },
+                        { prompt: "Traduza a frase: 'Lamento o atraso.'", answer: "I am sorry for the delay." },
+                        { prompt: "Traduza a frase: 'Posso deixar para uma próxima vez?'", answer: "Can I take a rain check?" },
+                        { prompt: "Qual frase sugere uma intenção definitiva de encontrar um novo horário: 'remarcar' ou 'deixar para uma próxima vez'?", answer: "remarcar" },
+                        { prompt: "Traduza a frase: 'Posso remarcar?'", answer: "May I reschedule?" },
+                        { prompt: "Complete a frase: 'Não posso comparecer à reunião, estou ___ com outro cliente.'", answer: "duplamente reservada" }
+                    ]
+                }
+            }
+        };
+
+        // Helper functions for TTS audio conversion
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcmData, sampleRate) {
+            const pcm16 = new Int16Array(pcmData);
+            const dataLength = pcm16.length * 2;
+            const buffer = new ArrayBuffer(44 + dataLength);
+            const view = new DataView(buffer);
+
+            let offset = 0;
+
+            const writeString = (str) => {
+                for (let i = 0; i < str.length; i++) {
+                    view.setUint8(offset++, str.charCodeAt(i));
+                }
+            };
+
+            // RIFF chunk
+            writeString('RIFF');
+            view.setUint32(offset, 36 + dataLength, true); // ChunkSize
+            offset += 4;
+            writeString('WAVE');
+            offset += 4;
+
+            // fmt sub-chunk
+            writeString('fmt ');
+            view.setUint32(offset, 16, true); // Subchunk1Size
+            offset += 4;
+            view.setUint16(offset, 1, true); // AudioFormat: 1 for PCM
+            offset += 2;
+            view.setUint16(offset, 1, true); // NumChannels
+            offset += 2;
+            view.setUint32(offset, sampleRate, true); // SampleRate
+            offset += 4;
+            view.setUint32(offset, sampleRate * 1 * 2, true); // ByteRate
+            offset += 4;
+            view.setUint16(offset, 1 * 2, true); // BlockAlign
+            offset += 2;
+            view.setUint16(offset, 16, true); // BitsPerSample
+            offset += 2;
+
+            // data sub-chunk
+            writeString('data');
+            view.setUint32(offset, dataLength, true); // Subchunk2Size
+            offset += 4;
+
+            for (let i = 0; i < pcm16.length; i++) {
+                view.setInt16(offset, pcm16[i], true);
+                offset += 2;
+            }
+
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+
+        // State and DOM references
+        let currentLang = 'en';
+        let currentExercise;
+        const langButtons = document.querySelectorAll('.lang-buttons button');
+        const contentCards = document.querySelectorAll('.content-card');
+        const audio = document.getElementById('tts-audio');
+        const playPromptBtn = document.getElementById('play-prompt-audio');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const pdfExportBtn = document.getElementById('pdf-export-btn');
+        const exerciseInput = document.getElementById('exercise-input');
+        const checkAnswerBtn = document.getElementById('check-answer-btn');
+        const nextExerciseBtn = document.getElementById('next-exercise-btn');
+        const feedbackMessage = document.getElementById('feedback-message');
+
+        // Function to update all content based on selected language
+        function updateContent(lang) {
+            currentLang = lang;
+            const data = dabymethod[lang];
+
+            // Update language buttons active state
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${lang}-btn`).classList.add('active');
+
+            // Update main content
+            document.getElementById('method-title').textContent = data.method.title;
+            document.getElementById('method-description').textContent = data.method.description;
+            document.getElementById('lesson1-title').textContent = data.lesson1.title;
+            document.getElementById('lesson1-text').innerHTML = data.lesson1.text;
+            // Guide section is now here
+            document.getElementById('guide-title').textContent = data.guide.title;
+            document.getElementById('guide-text').innerHTML = data.guide.text;
+            // Lesson 2 is now here
+            document.getElementById('lesson2-title').textContent = data.lesson2.title;
+            document.getElementById('lesson2-text').innerHTML = data.lesson2.text;
+            // Lesson 3 is now here
+            document.getElementById('lesson3-title').textContent = data.lesson3.title;
+            document.getElementById('lesson3-text').innerHTML = data.lesson3.text;
+            // Updated to include Lesson 4 content.
+            document.getElementById('lesson4-title').textContent = data.lesson4.title;
+            document.getElementById('lesson4-text').innerHTML = data.lesson4.text;
+            // NEW: Updated to include Lesson 5 content.
+            document.getElementById('lesson5-title').textContent = data.lesson5.title;
+            document.getElementById('lesson5-text').innerHTML = data.lesson5.text;
+            // NEW: Updated to include Lesson 6 content.
+            document.getElementById('lesson6-title').textContent = data.lesson6.title;
+            document.getElementById('lesson6-text').innerHTML = data.lesson6.text;
+
+            document.getElementById('exercise-title').textContent = data.exercise.title;
+
+            setupExercise();
+        }
+
+        // Function to select and display a new exercise
+        function setupExercise() {
+            const exercises = dabymethod[currentLang].exercise.exercises;
+            currentExercise = exercises[Math.floor(Math.random() * exercises.length)];
+            document.getElementById('exercise-prompt-text').textContent = currentExercise.prompt;
+            exerciseInput.value = '';
+            feedbackMessage.textContent = '';
+            feedbackMessage.classList.remove('correct', 'incorrect');
+            nextExerciseBtn.style.display = 'none';
+            checkAnswerBtn.style.display = 'block';
+            exerciseInput.disabled = false;
+        }
+
+        // Function to check the user's answer
+        function checkAnswer() {
+            const userAnswer = exerciseInput.value.trim().toLowerCase();
+            const correctAnswer = currentExercise.answer.trim().toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage.textContent = "Correct! Well done.";
+                feedbackMessage.classList.add('correct');
+                feedbackMessage.classList.remove('incorrect');
+                nextExerciseBtn.style.display = 'block';
+                checkAnswerBtn.style.display = 'none';
+                exerciseInput.disabled = true;
+            } else {
+                feedbackMessage.textContent = `Incorrect. The correct answer is: "${currentExercise.answer}".`;
+                feedbackMessage.classList.add('incorrect');
+                feedbackMessage.classList.remove('correct');
+                nextExerciseBtn.style.display = 'block';
+                checkAnswerBtn.style.display = 'none';
+                exerciseInput.disabled = true;
+            }
+        }
+
+        // Function to play audio using the TTS API
+        async function playAudio(text) {
+            playPromptBtn.disabled = true;
+            playPromptBtn.style.opacity = 0.5;
+            loadingSpinner.classList.remove('hidden');
+
+            const voiceName = currentLang === 'en' ? 'Puck' : 'Laomedeia'; // Pick a voice for each language
+            const payload = {
+                contents: [{
+                    parts: [{ text: text }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: voiceName }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)[1], 10);
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    
+                    audio.src = audioUrl;
+                    audio.play();
+
+                    audio.onended = () => {
+                        URL.revokeObjectURL(audioUrl); // Clean up the object URL
+                        playPromptBtn.disabled = false;
+                        playPromptBtn.style.opacity = 1;
+                        loadingSpinner.classList.add('hidden');
+                    };
+                } else {
+                    console.error("Audio generation failed:", result);
+                    playPromptBtn.disabled = false;
+                    playPromptBtn.style.opacity = 1;
+                    loadingSpinner.classList.add('hidden');
+                }
+
+            } catch (error) {
+                console.error("Error fetching audio from API:", error);
+                playPromptBtn.disabled = false;
+                playPromptBtn.style.opacity = 1;
+                loadingSpinner.classList.add('hidden');
+            }
+        }
+
+        // Function to export content to PDF
+        function generatePdf() {
+            const element = document.getElementById('content-to-export');
+            html2pdf(element, {
+                margin: 10,
+                filename: 'DABY_Method.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            });
+        }
+
+        // Event listeners
+        window.onload = function() {
+            // Load English content initially
+            updateContent('en');
+
+            // Language button handlers
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.id.replace('-btn', '');
+                    if (lang !== currentLang) {
+                        updateContent(lang);
+                    }
+                });
+            });
+
+            // Exercise button handlers
+            checkAnswerBtn.addEventListener('click', checkAnswer);
+            exerciseInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkAnswer();
+                }
+            });
+            nextExerciseBtn.addEventListener('click', setupExercise);
+
+            // Audio button handler
+            playPromptBtn.addEventListener('click', () => {
+                const text = document.getElementById('exercise-prompt-text').textContent;
+                playAudio(text);
+            });
+
+            // PDF export button handler
+            pdfExportBtn.addEventListener('click', generatePdf);
+
+            // Intersection Observer for fade-in effect on content cards
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target); // Stop observing once it has animated
+                    }
+                });
+            }, {
+                threshold: 0.2 // Trigger when 20% of the item is visible
+            });
+
+            contentCards.forEach(card => {
+                observer.observe(card);
+            });
+        };
+    </script>
+
+</body>
+</html>
